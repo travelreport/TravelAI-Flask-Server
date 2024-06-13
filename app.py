@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify
 from dotenv import load_dotenv
 from openai import OpenAI
 from pymongo import MongoClient
+from pymongo.server_api import ServerApi
 from uuid import uuid1
 from apscheduler.schedulers.background import BackgroundScheduler
 import os, requests, time, threading
@@ -9,8 +10,9 @@ import os, requests, time, threading
 app = Flask(__name__)
 
 # Define database and users
-app.config['MONGO_URI'] = 'mongodb+srv://yoshiroito0630:UVOhDWMJ4bemwm4j@cluster-travelai.mjnhe9t.mongodb.net/?retryWrites=true&w=majority&appName=Cluster-TravelAI'
-client = MongoClient(app.config['MONGO_URI'])
+uri = "mongodb+srv://yoshiroito0630:<password>@cluster-travelai.mjnhe9t.mongodb.net/?retryWrites=true&w=majority&appName=Cluster-TravelAI"
+# Create a new client and connect to the server
+client = MongoClient(uri, server_api=ServerApi('1'))
 db_name = 'TravelAI'
 
 # if db_name not in client.list_database_names():
