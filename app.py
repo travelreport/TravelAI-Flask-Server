@@ -10,7 +10,7 @@ import os, requests, time, threading
 app = Flask(__name__)
 
 # Define database and users
-uri = "mongodb+srv://yoshiroito0630:<password>@cluster-travelai.mjnhe9t.mongodb.net/?retryWrites=true&w=majority&appName=Cluster-TravelAI"
+uri = "mongodb+srv://yoshiroito0630:UVOhDWMJ4bemwm4j@cluster-travelai.mjnhe9t.mongodb.net/?retryWrites=true&w=majority&appName=Cluster-TravelAI"
 # Create a new client and connect to the server
 client = MongoClient(uri, server_api=ServerApi('1'))
 db_name = 'TravelAI'
