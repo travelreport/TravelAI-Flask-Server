@@ -9,8 +9,8 @@ import os, requests, time, threading
 app = Flask(__name__)
 
 # Define database and users
-app.config['MONGO_URI'] = 'mongodb://127.0.0.1:27017'
-client = MongoClient(app.config['MONGO_URI'])
+uri = "mongodb+srv://yoshiroito0630:UVOhDWMJ4bemwm4j@cluster-travelai.mjnhe9t.mongodb.net/?retryWrites=true&w=majority&appName=Cluster-TravelAI"
+client = MongoClient(uri, server_api=ServerApi('1'))
 db_name = 'TravelAI'
 
 # if db_name not in client.list_database_names():
