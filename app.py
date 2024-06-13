@@ -290,4 +290,4 @@ def thread_treat():
             new_content = {"$set": {"progress": progress, "ans": ans, "created_time": current_time}}
             reports.update_one(filter, new_content)
 if __name__ == '__main__':
-    app.run(host='0.0.0.0')
+    app.run(host='0.0.0.0', port=5000)
