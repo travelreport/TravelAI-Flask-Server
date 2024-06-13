@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify
 from dotenv import load_dotenv
 from openai import OpenAI
-from pymongo import MongoClient
+from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
 from uuid import uuid1
 from apscheduler.schedulers.background import BackgroundScheduler
