@@ -1,7 +1,8 @@
 from flask import Flask, request, jsonify
 from dotenv import load_dotenv
 from openai import OpenAI
-from pymongo import MongoClient
+from pymongo.mongo_client import MongoClient
+from pymongo.server_api import ServerApi
 from uuid import uuid1
 from apscheduler.schedulers.background import BackgroundScheduler
 import os, requests, time, threading
@@ -9,7 +10,7 @@ import os, requests, time, threading
 app = Flask(__name__)
 
 # Define database and users
-app.config['MONGO_URI'] = 'mongodb://localhost:27017'
+app.config['MONGO_URI'] = 'mongodb://127.0.0.1:27017'
 client = MongoClient(app.config['MONGO_URI'])
 db_name = 'TravelAI'
 
@@ -290,4 +291,4 @@ def thread_treat():
             new_content = {"$set": {"progress": progress, "ans": ans, "created_time": current_time}}
             reports.update_one(filter, new_content)
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+    app.run(host='0.0.0.0')
