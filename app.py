@@ -9,7 +9,7 @@ import os, requests, time, threading
 app = Flask(__name__)
 
 # Define database and users
-app.config['MONGO_URI'] = 'mongodb://127.0.0.1:27017'
+app.config['MONGO_URI'] = 'mongodb://localhost:27017'
 client = MongoClient(app.config['MONGO_URI'])
 db_name = 'TravelAI'
 
@@ -281,7 +281,7 @@ def thread_treat():
             print(response)
             ans = ans + response.choices[0].message.content
             print(response.usage)
-            progress = progress + int(1/len(selections) * 100)
+            progress = progress + 1/len(selections) * 100
             if progress >= 95:
                 progress = 100
             print("progress----------->", progress)
@@ -290,4 +290,4 @@ def thread_treat():
             new_content = {"$set": {"progress": progress, "ans": ans, "created_time": current_time}}
             reports.update_one(filter, new_content)
 if __name__ == '__main__':
-    app.run(host='0.0.0.0')
+    app.run(host='0.0.0.0', port=5000)
