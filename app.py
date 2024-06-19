@@ -53,7 +53,7 @@ def delete_expired_reports():
 scheduler.add_job(delete_expired_reports, 'interval', minutes=30)
 scheduler.start()
 
-@app.route('/hello', methods=['POST'])
+@app.route('/hello', methods=['GET'])
 def hello_world():
     return "Hello World!"
 
