@@ -10,8 +10,8 @@ import os, requests, time, threading
 app = Flask(__name__)
 
 # Define database and users
-app.config['MONGO_URI'] = 'mongodb+srv://yoshiroito0630:chBbUzT8PuxznEIq@cluster-travelai.mjnhe9t.mongodb.net/'
-# app.config['MONGO_URI'] = 'mongodb://127.0.0.1:27017'
+# app.config['MONGO_URI'] = 'mongodb+srv://yoshiroito0630:chBbUzT8PuxznEIq@cluster-travelai.mjnhe9t.mongodb.net/'
+app.config['MONGO_URI'] = 'mongodb://127.0.0.1:27017'
 client = MongoClient(app.config['MONGO_URI'])
 db_name = 'TravelAI'
 
@@ -298,7 +298,7 @@ def thread_treat():
             content = {"id": id, "progress": progress}
             reports.insert_one(content)
         else: 
-           if selection == 1:
+            if selection == 1:
                 response = client.chat.completions.create(
                     model="gpt-4o",
                     messages=[
