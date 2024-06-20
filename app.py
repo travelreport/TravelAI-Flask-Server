@@ -10,8 +10,8 @@ import os, requests, time, threading
 app = Flask(__name__)
 
 # Define database and users
-app.config['MONGO_URI'] = 'mongodb+srv://yoshiroito0630:chBbUzT8PuxznEIq@cluster-travelai.mjnhe9t.mongodb.net/'
-# app.config['MONGO_URI'] = 'mongodb://127.0.0.1:27017'
+# app.config['MONGO_URI'] = 'mongodb+srv://yoshiroito0630:chBbUzT8PuxznEIq@cluster-travelai.mjnhe9t.mongodb.net/'
+app.config['MONGO_URI'] = 'mongodb://127.0.0.1:27017'
 client = MongoClient(app.config['MONGO_URI'])
 db_name = 'TravelAI'
 
@@ -38,6 +38,7 @@ id = ""
 location = ""
 start_date = ""
 end_date = ""
+ans = ""
 
 
 scheduler = BackgroundScheduler()
@@ -53,17 +54,15 @@ def delete_expired_reports():
 scheduler.add_job(delete_expired_reports, 'interval', minutes=30)
 scheduler.start()
 
-@app.route('/hello', methods=['GET'])
-def hello_world():
-    return "Hello world!"
 
 @app.route('/request', methods=['POST'])
 def index():
-    global selections, prompts, id, location, start_date, end_date
+    global selections, prompts, id, location, start_date, end_date, ans
     location = request.json["location"]
     start_date = request.json["start_date"]
     end_date = request.json["end_date"]
     selections = request.json["selections"]
+    ans = ""
 
     if request.headers.get("Authorization"):
         current_auth_key = request.headers.get("Authorization")
@@ -265,17 +264,27 @@ def get_report():
         return {'error': 'API key is required'}, 401
 
 def thread_treat():
-    global selections, prompts, id, location, start_date, end_date
+    global selections, prompts, id, location, start_date, end_date, ans
     for index, selection in enumerate(selections):
-        if selection == 1:
-            response = client.chat.completions.create(
-                model="gpt-4o",
-                messages=[
-                    {"role": "assistant", "content": "Start with one h2 tag which must be left aligned, underlined and upper-case for only title of prompt-first line. These headings help in breaking down the information for easy understanding and implementation. Mustn't use h1 or h2 tag for other information or title. If other information or title have already got h1 or h2 tag, must replace with h3 tag. Make sure not to miss any section. Apply p tags within each section to elaborate on the main information that might be interesting to the users. When detailing steps or listing anything, use ul for an unordered list to present the information clearly. Emphasize crucial instructions or points with italics or bold, ensuring they are prominently noticeable. But must not write anything outside HTML tags. I need only answer with HTML styles. Also another main thing to follow is that replace ChatGPT/OpenAI or your name/reference to TravelReportAI. Give me more than 300 words about the whole response."},
-                    {"role": "user", "content": prompts[selection-1]}
-                ],
-                max_tokens=2000
-            )
+        if index == 0:
+            if selection == 1:
+                response = client.chat.completions.create(
+                    model="gpt-4o",
+                    messages=[
+                        {"role": "assistant", "content": "Start with one h2 tag which must be left aligned, underlined and upper-case for only title of prompt-first line. These headings help in breaking down the information for easy understanding and implementation. Mustn't use h1 or h2 tag for other information or title. If other information or title have already got h1 or h2 tag, must replace with h3 tag. Make sure not to miss any section. Apply p tags within each section to elaborate on the main information that might be interesting to the users. When detailing steps or listing anything, use ul for an unordered list to present the information clearly. Emphasize crucial instructions or points with italics or bold, ensuring they are prominently noticeable. But must not write anything outside HTML tags. I need only answer with HTML styles. Also another main thing to follow is that replace ChatGPT/OpenAI or your name/reference to TravelReportAI. Give me more than 300 words about the whole response."},
+                        {"role": "user", "content": prompts[selection-1]}
+                    ],
+                    max_tokens=2000
+                )
+            else:
+                response = client.chat.completions.create(
+                    model="gpt-4o",
+                    messages=[
+                        {"role": "assistant", "content": "Start with one h2 tag which must be left aligned and upper-case for only title of prompt-first line. These headings help in breaking down the information for easy understanding and implementation. Mustn't use h1 or h2 tag for other information or title. If other information or title have already got h1 or h2 tag, must replace with h3 tag. Make sure not to miss any section. Apply p tags within each section to elaborate on the main information that might be interesting to the users. When detailing steps or listing anything, use ul for an unordered list to present the information clearly. Emphasize crucial instructions or points with italics or bold, ensuring they are prominently noticeable. But must not write anything outside HTML tags. I need only answer with HTML styles. Also another main thing to follow is that replace ChatGPT/OpenAI or your name/reference to TravelReportAI. Give me more than 300 words about the whole response."},
+                        {"role": "user", "content": prompts[selection-1]}
+                    ],
+                    max_tokens=2000
+                )
             print(response)
             ans = f'<h1 style="text-align: center;">Travel Report for {location} </h1><h1 style="text-align: center;">({start_date} to {end_date})</h1>\n\n'
             text = response.choices[0].message.content
