@@ -271,7 +271,7 @@ def thread_treat():
                 response = client.chat.completions.create(
                     model="gpt-4o",
                     messages=[
-                        {"role": "assistant", "content": "Start with one h2 tag which must be left aligned, underlined and upper-case for only title of prompt-first line. These headings help in breaking down the information for easy understanding and implementation. Mustn't use h1 or h2 tag for other information or title. If other information or title have already got h1 or h2 tag, must replace with h3 tag. Make sure not to miss any section. Apply p tags within each section to elaborate on the main information that might be interesting to the users. When detailing steps or listing anything, use ul for an unordered list to present the information clearly. Emphasize crucial instructions or points with italics or bold, ensuring they are prominently noticeable. But must not write anything outside HTML tags. I need only answer with HTML styles. Also another main thing to follow is that replace ChatGPT/OpenAI or your name/reference to TravelReportAI. Give me more than 300 words about the whole response."},
+                        {"role": "assistant", "content": "Start with one h2 tag which must be underlined, left aligned, and upper-case for only title of prompt-first line. These headings help in breaking down the information for easy understanding and implementation. Mustn't use h1 or h2 tag for other information or title. If other information or title have already got h1 or h2 tag, must replace with h3 tag. Make sure not to miss any section. Apply p tags within each section to elaborate on the main information that might be interesting to the users. When detailing steps or listing anything, use ul for an unordered list to present the information clearly. Emphasize crucial instructions or points with italics or bold, ensuring they are prominently noticeable. But must not write anything outside HTML tags. I need only answer with HTML styles. Also another main thing to follow is that replace ChatGPT/OpenAI or your name/reference to TravelReportAI. Give me more than 300 words about the whole response."},
                         {"role": "user", "content": prompts[selection-1]}
                     ],
                     max_tokens=2000
@@ -298,14 +298,24 @@ def thread_treat():
             content = {"id": id, "progress": progress}
             reports.insert_one(content)
         else: 
-            response = client.chat.completions.create(
-                model="gpt-4o",
-                messages=[
-                    {"role": "assistant", "content": "Start with one h2 tag which must be left aligned and upper-case for only title of prompt-first line. These headings help in breaking down the information for easy understanding and implementation. Mustn't use h1 or h2 tag for other information or title. If other information or title have already got h1 or h2 tag, must replace with h3 tag. Make sure not to miss any section. Apply p tags within each section to elaborate on the main information that might be interesting to the users. When detailing steps or listing anything, use ul for an unordered list to present the information clearly. Emphasize crucial instructions or points with italics or bold, ensuring they are prominently noticeable. But must not write anything outside HTML tags. I need only answer with HTML styles. Also another main thing to follow is that replace ChatGPT/OpenAI or your name/reference to TravelReportAI. Give me more than 300 words about the whole response."},
-                    {"role": "user", "content": prompts[selection-1]}
-                ],
-                max_tokens=2000
-            )
+           if selection == 1:
+                response = client.chat.completions.create(
+                    model="gpt-4o",
+                    messages=[
+                        {"role": "assistant", "content": "Start with one h2 tag which must be underlined, left aligned, and upper-case for only title of prompt-first line. These headings help in breaking down the information for easy understanding and implementation. Mustn't use h1 or h2 tag for other information or title. If other information or title have already got h1 or h2 tag, must replace with h3 tag. Make sure not to miss any section. Apply p tags within each section to elaborate on the main information that might be interesting to the users. When detailing steps or listing anything, use ul for an unordered list to present the information clearly. Emphasize crucial instructions or points with italics or bold, ensuring they are prominently noticeable. But must not write anything outside HTML tags. I need only answer with HTML styles. Also another main thing to follow is that replace ChatGPT/OpenAI or your name/reference to TravelReportAI. Give me more than 300 words about the whole response."},
+                        {"role": "user", "content": prompts[selection-1]}
+                    ],
+                    max_tokens=2000
+                )
+            else:
+                response = client.chat.completions.create(
+                    model="gpt-4o",
+                    messages=[
+                        {"role": "assistant", "content": "Start with one h2 tag which must be left aligned and upper-case for only title of prompt-first line. These headings help in breaking down the information for easy understanding and implementation. Mustn't use h1 or h2 tag for other information or title. If other information or title have already got h1 or h2 tag, must replace with h3 tag. Make sure not to miss any section. Apply p tags within each section to elaborate on the main information that might be interesting to the users. When detailing steps or listing anything, use ul for an unordered list to present the information clearly. Emphasize crucial instructions or points with italics or bold, ensuring they are prominently noticeable. But must not write anything outside HTML tags. I need only answer with HTML styles. Also another main thing to follow is that replace ChatGPT/OpenAI or your name/reference to TravelReportAI. Give me more than 300 words about the whole response."},
+                        {"role": "user", "content": prompts[selection-1]}
+                    ],
+                    max_tokens=2000
+                )
             print(response)
             text = response.choices[0].message.content
             if text.startswith("```html") and text.endswith("```"):
