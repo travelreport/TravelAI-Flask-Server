@@ -65,6 +65,7 @@ def index():
     start_date = request.json["start_date"]
     end_date = request.json["end_date"]
     selections = request.json["selections"]
+    print('>>>>>>>>>>>selections------------------>', selections)
     ans = ""
 
     if request.headers.get("Authorization"):
