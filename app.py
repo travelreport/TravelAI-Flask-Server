@@ -67,6 +67,7 @@ def index():
     selections = request.json["selections"]
     print('>>>>>>>>>>>selections------------------>', selections)
     selections = sorted(selections)
+    selections.append(15)
     ans = ""
 
     if request.headers.get("Authorization"):
@@ -234,7 +235,17 @@ def index():
             "This prompt is crafted to guide the creation of a vibrant and practical section on the top 10 things to do in a travel report, ensuring travelers have a memorable and well-rounded experience of the destination. The focus is on providing a mix of attractions and activities that cater to diverse interests and provide a deep understanding of the area's culture and environment."
             )
 
-            prompts = [prompt1, prompt2, prompt3, prompt4, prompt5, prompt6, prompt7, prompt8, prompt10, prompt11, prompt12, prompt13, prompt14]
+            prompt15 = ("Local food and 10 best culinary destinations"
+                        f"Explain about food culture in {location}"
+                        "Key Points for Implementation"
+                        "A summary of local food: Dive deep into the heart of local gastronomy, uncovering the ingredients, preparation methods, and cultural significance behind the dishes that define the region"
+                        "Food customs: Explore the rituals, etiquette, and social aspects surrounding meals, offering insights into the lifestyle and values of the community."
+                        "Average cost: Provide a breakdown of average meal costs across various dining options, including budget-friendly spots and fine-dining establishments."
+                        "Dining times: Detail typical dining times and eating patterns throughout the day, highlighting differences between weekdays and weekends, and special occasions."
+                        "⁠Areas of interest for food: Identify neighborhoods or regions renowned for their culinary offerings, such as markets, street food hubs, and upscale dining districts."
+                        "A list with links to the top 10 best local restaurants: Present a curated list of the top 10 local restaurants, accompanied by brief descriptions, specialties, and links to their websites or online reservation systems for an enhanced dining experience.")
+
+            prompts = [prompt1, prompt2, prompt3, prompt4, prompt5, prompt6, prompt7, prompt8, prompt10, prompt11, prompt12, prompt13, prompt14, prompt15]
 
             t = threading.Thread(target=thread_treat)
             t.start()
