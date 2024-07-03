@@ -67,7 +67,7 @@ def index():
     selections = request.json["selections"]
     print('>>>>>>>>>>>selections------------------>', selections)
     selections = sorted(selections)
-    selections.append(15)
+    selections.append(14)
     ans = ""
 
     if request.headers.get("Authorization"):
